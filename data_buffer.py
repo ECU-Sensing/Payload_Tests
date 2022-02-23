@@ -94,4 +94,4 @@ def read_sensor():
     #      [Temp_F, R_Hum, Batt, NC0_5, MC1_0, NC1_0, MC2_5, NC2_5, MC4_0, NC4_0, MC10_0, NC10_0, tVOC]
     dt = datetime.now()
     timestamp_float = time.mktime(dt.timetuple()) + dt.microsecond/1e6
-    return [timestamp_float, 18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 6.21, 46.87, 172]
+    return [timestamp_float, 18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 172]
