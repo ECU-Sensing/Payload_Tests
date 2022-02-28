@@ -57,4 +57,4 @@ def get_gps_data():
         lat = float(msg.lat)
         # More Information: https://github.com/Knio/pynmea2
 
-    return [lon,lat]
+    return [lat,lon]
