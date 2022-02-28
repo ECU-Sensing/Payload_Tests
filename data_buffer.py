@@ -11,8 +11,10 @@ from tracemalloc import start
 import pandas as pd
 from csv import writer
 
+from gps import get_gps_data
+
 ROUND_DEC = 3
-DATA_SIZE = 16
+DATA_SIZE = 13
 
 def write_data_to_csv(buffer):
     #print(buffer)
@@ -38,8 +40,8 @@ def write_data_to_csv(buffer):
         f_object.close()
 
 def get_agg_from_buffer(buffer):
-    #[datetime, 18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 6.21, 46.87, 172]
-    start_val = 1
+    #[18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 172]
+    start_val = 0
     increment = DATA_SIZE
     agg = []
 
@@ -74,24 +76,27 @@ def get_data():
         sleep(1)
 
     # Save Seconds Data in CSV
-    write_data_to_csv(buffer)
+    #write_data_to_csv(buffer)
 
     # Create Aggregation Metrics from Buffer
     buffer = get_agg_from_buffer(buffer)
 
     # Add Timestamps
-    end_dt = datetime.now()
-    buffer.insert(0,time.mktime(start_dt.timetuple()) + start_dt.microsecond/1e6)
-    buffer.extend([time.mktime(end_dt.timetuple()) + end_dt.microsecond/1e6])
+    #end_dt = datetime.now()
+    #buffer.insert(0,time.mktime(start_dt.timetuple()) + start_dt.microsecond/1e6)
+    #buffer.extend([time.mktime(end_dt.timetuple()) + end_dt.microsecond/1e6])
+
+    # Add Current Location
+    buffer += get_gps_data()
 
     #Encode Minutes data to bytearray for transmission
     sensor_data = float_list_to_bytes(buffer)
     
-    #print(len(sensor_data))
+    print(len(sensor_data))
     return sensor_data
 
 def read_sensor():
     #      [Temp_F, R_Hum, Batt, NC0_5, MC1_0, NC1_0, MC2_5, NC2_5, MC4_0, NC4_0, MC10_0, NC10_0, tVOC]
-    dt = datetime.now()
-    timestamp_float = time.mktime(dt.timetuple()) + dt.microsecond/1e6
-    return [timestamp_float, 18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 172]
+    #dt = datetime.now()
+    #timestamp_float = time.mktime(dt.timetuple()) + dt.microsecond/1e6
+    return [18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 172]
