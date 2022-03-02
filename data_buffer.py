@@ -16,6 +16,12 @@ from gps import get_gps_data
 ROUND_DEC = 3
 DATA_SIZE = 13
 
+def read_sensor():
+    #      [Temp_F, R_Hum, Batt, NC0_5, MC1_0, NC1_0, MC2_5, NC2_5, MC4_0, NC4_0, MC10_0, NC10_0, tVOC]
+    #dt = datetime.now()
+    #timestamp_float = time.mktime(dt.timetuple()) + dt.microsecond/1e6
+    return [18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 172]
+
 def write_data_to_csv(buffer):
     #print(buffer)
     df = pd.DataFrame(buffer)
@@ -87,7 +93,7 @@ def get_data():
     #buffer.extend([time.mktime(end_dt.timetuple()) + end_dt.microsecond/1e6])
 
     # Add Current Location
-    buffer += get_gps_data()
+    #buffer += get_gps_data()
 
     #Encode Minutes data to bytearray for transmission
     sensor_data = float_list_to_bytes(buffer)
@@ -95,8 +101,3 @@ def get_data():
     print(len(sensor_data))
     return sensor_data
 
-def read_sensor():
-    #      [Temp_F, R_Hum, Batt, NC0_5, MC1_0, NC1_0, MC2_5, NC2_5, MC4_0, NC4_0, MC10_0, NC10_0, tVOC]
-    #dt = datetime.now()
-    #timestamp_float = time.mktime(dt.timetuple()) + dt.microsecond/1e6
-    return [18, 25, 100, 40.16, 5.87, 46.65, 6.21, 46.85, 6.21, 46.95, 6.21, 46.81, 172]
